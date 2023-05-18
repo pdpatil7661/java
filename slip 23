@@ -1,0 +1,40 @@
+2. Write a java program to accept ‘N’ student names through command line, store them into the appropriate
+collection and display them by using Iterator and ListIterator interface. 	
+
+<%@ page language="java" %>
+<html>
+<head>
+    <title>Greeting Page</title>
+</head>
+<body>
+    <h1>Welcome to our website</h1>
+    <% String userName = request.getParameter("userName"); %>
+    <% String greetingMessage = getGreetingMessage(userName); %>
+    <p><%= greetingMessage %></p>
+    <form action="greeting.jsp" method="get">
+        Enter your name: <input type="text" name="userName">
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Calendar" %>
+
+<%
+String getGreetingMessage(String userName) {
+    String greetingMessage = "Hello, " + userName;
+    Calendar cal = Calendar.getInstance();
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    if (hour >= 0 && hour < 12) {
+        greetingMessage += ". Good morning!";
+    } else if (hour >= 12 && hour < 18) {
+        greetingMessage += ". Good afternoon!";
+    } else {
+        greetingMessage += ". Good evening!";
+    }
+    return greetingMessage;
+}
+%>
