@@ -1,0 +1,151 @@
+Write a Menu Driven program in Java for the following: 
+Assume Employee table with   attributes (ENo, EName, Salary) is already created.
+1. Insert 2. Update 3. Display 4.Exit.   
+
+import java.sql.*;
+
+public class EmployeeManagement {
+    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/mydatabase";
+    static final String USER = "username";
+    static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            Class.forName(JDBC_DRIVER);
+
+            conn = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+            stmt = conn.createStatement();
+
+            int choice;
+            do {
+                System.out.println("Menu:");
+                System.out.println("1. Insert");
+                System.out.println("2. Update");
+                System.out.println("3. Display");
+                System.out.println("4. Exit");
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(System.console().readLine());
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter employee number: ");
+                        int eno = Integer.parseInt(System.console().readLine());
+                        System.out.print("Enter employee name: ");
+                        String ename = System.console().readLine();
+                        System.out.print("Enter employee salary: ");
+                        double salary = Double.parseDouble(System.console().readLine());
+
+                        String sql = "INSERT INTO Employee (ENo, EName, Salary) VALUES (?, ?, ?)";
+                        PreparedStatement insertStmt = conn.prepareStatement(sql);
+                        insertStmt.setInt(1, eno);
+                        insertStmt.setString(2, ename);
+                        insertStmt.setDouble(3, salary);
+                        insertStmt.executeUpdate();
+                        System.out.println("Record inserted successfully.");
+                        insertStmt.close();
+                        break;
+                    case 2:
+                        System.out.print("Enter employee number: ");
+                        eno = Integer.parseInt(System.console().readLine());
+                        System.out.print("Enter new employee name: ");
+                        ename = System.console().readLine();
+                        System.out.print("Enter new employee salary: ");
+                        salary = Double.parseDouble(System.console().readLine());
+
+                        sql = "UPDATE Employee SET EName=?, Salary=? WHERE ENo=?";
+                        PreparedStatement updateStmt = conn.prepareStatement(sql);
+                        updateStmt.setString(1, ename);
+                        updateStmt.setDouble(2, salary);
+                        updateStmt.setInt(3, eno);
+                        int rowsAffected = updateStmt.executeUpdate();
+
+                        if (rowsAffected == 0) {
+                            System.out.println("No records found with employee number " + eno);
+                        } else {
+                            System.out.println(rowsAffected + " record(s) updated successfully.");
+                        }
+
+                        updateStmt.close();
+                        break;
+                    case 3:
+                        sql = "SELECT * FROM Employee";
+                        ResultSet rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            eno = rs.getInt("ENo");
+                            ename = rs.getString("EName");
+                            salary = rs.getDouble("Salary");
+                            System.out.println("Employee number: " + eno + ", Employee name: " + ename + ", Employee salary: " + salary);
+                        }
+                        rs.close();
+                        break;
+                    case 4:
+                        System.out.println("Exiting program.");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+            } while (choice != 4);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+
+
+2.	Write a java program to accept ‘N’ student names through command line, store them into the appropriate
+Collection and display them by using Iterator and ListIterator interface. 	
+
+<%@ page language="java" %>
+<html>
+<head>
+    <title>Greeting Page</title>
+</head>
+<body>
+    <h1>Welcome to our website</h1>
+    <% String userName = request.getParameter("userName"); %>
+    <% String greetingMessage = getGreetingMessage(userName); %>
+    <p><%= greetingMessage %></p>
+    <form action="greeting.jsp" method="get">
+        Enter your name: <input type="text" name="userName">
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Calendar" %>
+
+<%
+String getGreetingMessage(String userName) {
+    String greetingMessage = "Hello, " + userName;
+    Calendar cal = Calendar.getInstance();
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    if (hour >= 0 && hour < 12) {
+        greetingMessage += ". Good morning!";
+    } else if (hour >= 12 && hour < 18) {
+        greetingMessage += ". Good afternoon!";
+    } else {
+        greetingMessage += ". Good evening!";
+    }
+    return greetingMessage;
+}
+%>
+
