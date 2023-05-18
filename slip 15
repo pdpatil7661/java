@@ -1,0 +1,67 @@
+Q1) Write a java program to display name and priority of a Thread 
+public class MainThread {
+    public static void main(String[] args) {
+        Thread t = Thread.currentThread();
+        System.out.println("Current Thread: " + t); // Change Name
+        t.setName("My Thread");
+        System.out.println("After the name is Changed: " + t);
+        try {
+            for (int i = 2; i > 0; i--) {
+                System.out.println(i);
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+}
+
+Q2) Write a SERVLET program which counts how many times a user has visited a web page. 
+If user is visiting the page for the first time, display a welcome message. If the user is revisiting the page, display the number of times visited. (Use Cookie) 
+
+VisitServelt.java code : 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class VisitServlet extends HttpServlet {
+    private static int i = 1;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        String k = String.valueOf(i);
+        Cookie c = new Cookie("visit", k);
+        response.addCookie(c);
+
+        int j = Integer.parseInt(c.getValue());
+
+        if (j == 1) {
+            out.println("Welcome to the web page");
+        } else {
+            out.println("You have visited " + j + " times");
+        }
+        i++;
+    }
+}
+
+web.xml code : 
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app>
+    <servlet>
+        <servlet-name>VisitServlet</servlet-name>
+        <servlet-class>VisitServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VisitServlet</servlet-name>
+        <url-pattern>/VS</url-pattern>
+    </servlet-mapping>
+</web-app>
+
