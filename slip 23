@@ -1,3 +1,78 @@
+
+1.	Write a java program using Multithreading to accept a String from a user and display each vowel from a    
+String after every 3 seconds.         
+
+import java.util.Scanner;
+
+public class VowelDisplay {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String inputString = scanner.nextLine().toLowerCase(); // convert input to lowercase
+
+        for (int i = 0; i < inputString.length(); i++) {
+            char c = inputString.charAt(i);
+            if (isVowel(c)) {
+                System.out.print(c + " ");
+                pause(3000); // pause for 3 seconds
+            }
+        }
+    }
+
+    public static boolean isVowel(char c) {
+        return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u');
+    }
+
+    public static void pause(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
+
 2. Write a java program to accept ‘N’ student names through command line, store them into the appropriate
 collection and display them by using Iterator and ListIterator interface. 	
+
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
+
+public class StudentNames {
+    public static void main(String[] args) {
+        ArrayList<String> studentNames = new ArrayList<>();
+
+        // Accept N student names through command line and add them to the ArrayList
+        for (int i = 0; i < args.length; i++) {
+            studentNames.add(args[i]);
+        }
+
+        // Display the student names using Iterator interface
+        System.out.println("Student names using Iterator:");
+        printStudentNamesUsingIterator(studentNames);
+
+        // Display the student names using ListIterator interface
+        System.out.println("\nStudent names using ListIterator:");
+        printStudentNamesUsingListIterator(studentNames);
+    }
+
+    public static void printStudentNamesUsingIterator(ArrayList<String> studentNames) {
+        Iterator<String> iterator = studentNames.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+
+    public static void printStudentNamesUsingListIterator(ArrayList<String> studentNames) {
+        ListIterator<String> listIterator = studentNames.listIterator();
+        while (listIterator.hasNext()) {
+            System.out.println(listIterator.next());
+        }
+    }
+}
 
